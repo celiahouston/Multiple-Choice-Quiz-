@@ -23,44 +23,37 @@ const questions = [
     ],
     answer: 0,
   },
+
+  {
+    question: "Which of the following languages is predominantly used for styling?",
+    choices: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+    ],
+    answer: 1,
+  },
+
+  {
+    question: "Which tag is used to reference an external CSS file?",
+    choices: [
+      "<script>",
+      "<link>",
+      "<style>",
+    ],
+    answer: 2,
+  },
+
+  {
+    question: "Which HTML attribute is used to define inline styles?",
+    choices: [
+      "font",
+      "class",
+      "style",
+    ],
+    answer: 2,
+  },
 ];
-
-const questions = [
-    {
-      question: "What is HTML?",
-      choices: [
-        "HyperText Markup Language",
-        "A styling language",
-        "A web browser",
-      ],
-      answer: 0,
-    },
-  ];
-
-  const questions = [
-    {
-      question: "What is HTML?",
-      choices: [
-        "HyperText Markup Language",
-        "A styling language",
-        "A web browser",
-      ],
-      answer: 0,
-    },
-  ];
-
-  const questions = [
-    {
-      question: "What is HTML?",
-      choices: [
-        "HyperText Markup Language",
-        "A styling language",
-        "A web browser",
-      ],
-      answer: 0,
-    },
-  ];
-
 
 document.addEventListener("DOMContentLoaded", function () {
   showStartScreen();
