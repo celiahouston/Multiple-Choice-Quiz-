@@ -1,16 +1,14 @@
-const startButton = document.getElementById("startButton");
-const startScreen = document.getElementById("start-screen"); 
-const questionScreen = document.getElementById("questions");
-const questionTitle = document.getElementById("question-title");
-const choicesContainer = document.getElementById("choices");
-const endScreen = document.getElementById("end-screen");
-const finalScore = document.getElementById("final-score");
-const timerElement = document.getElementById("time");
-
 let currentQuestion = 0;
 let score = 0;
 let timeLeft = 75;
 let timer;
+let choicesContainer;
+let timerElement; 
+let questionTitle;
+let endScreen;
+let finalScore;
+let initialsInput;
+let submitButton; 
 
 const questions = [
   {
@@ -24,45 +22,60 @@ const questions = [
   },
 
   {
-    question: "Which of the following languages is predominantly used for styling?",
-    choices: [
-      "HTML",
-      "CSS",
-      "JavaScript",
-    ],
+    question:
+      "Which of the following languages is predominantly used for styling?",
+    choices: ["HTML", "CSS", "JavaScript"],
     answer: 1,
   },
 
   {
     question: "Which tag is used to reference an external CSS file?",
-    choices: [
-      "<script>",
-      "<link>",
-      "<style>",
-    ],
+    choices: ["<script>", "<link>", "<style>"],
     answer: 2,
   },
 
   {
     question: "Which HTML attribute is used to define inline styles?",
-    choices: [
-      "font",
-      "class",
-      "style",
-    ],
+    choices: ["font", "class", "style"],
     answer: 2,
   },
 ];
 
 document.addEventListener("DOMContentLoaded", function () {
-  showStartScreen();
-});
+    startButton = document.getElementById("startButton");
+    startScreen = document.getElementById("startScreen");
+    questionScreen = document.getElementById("questionScreen");
+    questionTitle = document.getElementById("questionTitle");
+    choicesContainer = document.getElementById("choices");
+    endScreen = document.getElementById("endScreen");
+    finalScore = document.getElementById("finalScore");
+    timerElement = document.getElementById("time");
+    initialsInput = document.getElementById("initials");
+    submitButton = document.getElementById("submitButton");
+    
+    if (!startScreen || !questionScreen || !endScreen || !submitButton) {
+        console.error("One or more elements not found in HTML");
+        return; 
+    }
+
+    startButton.addEventListener("click", startQuiz); 
+
+    submitButton.addEventListener("click", () => {
+        const initials = initialsInput.value;
+        if (initials) {
+            saveHighScore(initials, score);
+        } else {
+            alert("please enter initials to save score"); 
+        }
+    }); 
+
+    showStartScreen()
+}); 
 
 function showStartScreen() {
   startScreen.classList.remove("hide");
   questionScreen.classList.add("hide");
   endScreen.classList.add("hide");
-//   highscoresScreen.classList.add("hide");
 }
 
 function startQuiz() {
@@ -91,7 +104,7 @@ function showQuestion() {
   current.choices.forEach((choice, index) => {
     const button = document.createElement("button");
     button.textContent = choice;
-    button.classList.add("choice"); 
+    button.classList.add("choice");
     button.addEventListener("click", () => checkAnswer(index));
     choicesContainer.appendChild(button);
   });
@@ -118,26 +131,9 @@ function endQuiz() {
   finalScore.textContent = score;
 }
 
-startButton.addEventListener("click", startQuiz);
-
-document.addEventListener("DOMContentLoaded", function (){
-    const initialsInput = document.getElementById("initials");
-    const submitButton = document.getElementById("submitButton");
-
-submitButton.addEventListener("click", () => {
-  const initials = initialsInput.value;
-  if (initials) {
-    saveHighScore(initials, score);
-  } else {
-    alert("Please enter initials to save score.");
-  }
-});
-})
-
 function saveHighScore(initials, score) {
-  let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
-  highScores.push({ initials, score });
-  localStorage.setItem("highScores", JSON.stringify(highScores));
+    let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+    highScores.push({initials, score});
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+    console.log("High score saved:", highScores); 
 }
-
-showStartScreen();
