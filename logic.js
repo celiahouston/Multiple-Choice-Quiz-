@@ -5,9 +5,8 @@ const questionTitle = document.getElementById("question-title");
 const choicesContainer = document.getElementById("choices");
 const endScreen = document.getElementById("end-screen");
 const finalScore = document.getElementById("final-score");
-const initialsInput = document.getElementById("initials");
-const submitButton = document.getElementById("submitButton");
 const timerElement = document.getElementById("time");
+
 let currentQuestion = 0;
 let score = 0;
 let timeLeft = 75;
@@ -121,6 +120,10 @@ function endQuiz() {
 
 startButton.addEventListener("click", startQuiz);
 
+document.addEventListener("DOMContentLoaded", function (){
+    const initialsInput = document.getElementById("initials");
+    const submitButton = document.getElementById("submitButton");
+
 submitButton.addEventListener("click", () => {
   const initials = initialsInput.value;
   if (initials) {
@@ -129,6 +132,7 @@ submitButton.addEventListener("click", () => {
     alert("Please enter initials to save score.");
   }
 });
+})
 
 function saveHighScore(initials, score) {
   let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
