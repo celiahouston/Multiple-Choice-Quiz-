@@ -58,7 +58,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return; 
     }
 
-    startButton.addEventListener("click", startQuiz); 
+    if(startButton) {
+        startButton.addEventListener("click", startQuiz)
+    }
+
+    // startButton.addEventListener("click", startQuiz); 
 
     submitButton.addEventListener("click", () => {
         const initials = initialsInput.value;
