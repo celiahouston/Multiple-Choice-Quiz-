@@ -1,140 +1,146 @@
-const startButton = document.getElementById("start");
-const startScreen = document.getElementById("start-screen");
+const startButton = document.getElementById("startButton");
+const startScreen = document.getElementById("start-screen"); 
+const questionScreen = document.getElementById("questions");
 const questionTitle = document.getElementById("question-title");
-// const questionContainer = document.getElementById("questions"); 
-const questionScreen = document.getElementById("questionScreen"); 
 const choicesContainer = document.getElementById("choices");
 const endScreen = document.getElementById("end-screen");
 const finalScore = document.getElementById("final-score");
 const initialsInput = document.getElementById("initials");
-const submitButton = document.getElementById("submit-score");
+const submitButton = document.getElementById("submitButton");
 const timerElement = document.getElementById("time");
-const highscoresScreen = document.getElementById("submitScore"); 
-
 let currentQuestion = 0;
 let score = 0;
-let timeLeft = 75; 
+let timeLeft = 75;
+let timer;
+
+const questions = [
+  {
+    question: "What is HTML?",
+    choices: [
+      "HyperText Markup Language",
+      "A styling language",
+      "A web browser",
+    ],
+    answer: 0,
+  },
+];
 
 const questions = [
     {
-        question:"What is HTML?", 
-        choices: [
+      question: "What is HTML?",
+      choices: [
         "HyperText Markup Language",
-        "A styling language", 
+        "A styling language",
         "A web browser",
-        ], 
-        answer: 0 
-    }, 
-];
+      ],
+      answer: 0,
+    },
+  ];
 
-// export default questions; 
+  const questions = [
+    {
+      question: "What is HTML?",
+      choices: [
+        "HyperText Markup Language",
+        "A styling language",
+        "A web browser",
+      ],
+      answer: 0,
+    },
+  ];
 
-// add in questions and choices 
+  const questions = [
+    {
+      question: "What is HTML?",
+      choices: [
+        "HyperText Markup Language",
+        "A styling language",
+        "A web browser",
+      ],
+      answer: 0,
+    },
+  ];
 
-document.addEventListener("DOMContentLoaded", function(){
-    showStartScreen(); 
-})
+
+document.addEventListener("DOMContentLoaded", function () {
+  showStartScreen();
+});
 
 function showStartScreen() {
-    startScreen.classList.remove("hide");
-    questionScreen.classList.add("hide");
-    endScreen.classList.add("hide");
-    highscoresScreen.classList.add("hide"); 
+  startScreen.classList.remove("hide");
+  questionScreen.classList.add("hide");
+  endScreen.classList.add("hide");
+//   highscoresScreen.classList.add("hide");
 }
 
-function startQuiz () {
-    startScreen.classList.add("hide");
-    questionScreen.classList.remove("hide"); 
-    endScreen.classList.add("hide"); 
-    startTimer();
-    showQuestion(); 
-    console.log("start button clicked.");
+function startQuiz() {
+  startScreen.classList.add("hide");
+  questionScreen.classList.remove("hide");
+  startTimer();
+  showQuestion();
 }
 
 function startTimer() {
-    timer = setInterval(() => {
-        if (timeLeft > 0) {
-            timerElement.textContent = timeLeft;
-            timeLeft--;
-        } else {
-            clearInterval(timer);
-            endQuiz();
-        }
-    },1000); 
-}
-
-function showQuestion() { 
-    startScreen.classList.add("hide");
-    questionScreen.classList.remove("hide"); 
-    endScreen.classList.add("hide");
-    highscoresScreen.classList.add("hide");
-    const current = questions[currentQuestion];
-    const questionTitle = document.getElementById("question-title");
-    const choicesContainer = document.getElementById("choices"); 
-
-    questionTitle.textContent = current.question;
-    choicesContainer.innerHTML = ""; 
-
-    current.choices.forEach((choice, index) => {
-        const button = document.createElement("button");
-        button.textContent = choice; 
-        button.addEventListener("click", () => {
-            checkAnswer(index);
-        })
-        choicesContainer.appendChild(button); 
-    }); 
-}
-
-
-function checkAnswer() {
-    if (index === questions[currentQuestion].answer) {
-        score += 10;
+  timer = setInterval(() => {
+    if (timeLeft > 0) {
+      timerElement.textContent = timeLeft;
+      timeLeft--;
     } else {
-        timeLeft -= 10;
-    } 
-    currentQuestion++;
-    if (currentQuestion < questions.length) {
-        showQuestion();
-    } else {
-        endQuiz(); 
+      endQuiz();
     }
+  }, 1000);
 }
 
-// function showEndScreen() {
-//     startScreen.classList.add("hide");
-//     questionScreen.classList.add("hide");
-//     endScreen.classList.remove("hide");
-//     highscoresScreen.classList.add("hide"); 
-// }
+function showQuestion() {
+  const current = questions[currentQuestion];
+  questionTitle.textContent = current.question;
+  choicesContainer.innerHTML = "";
 
-// function showHighScores() {
-//     startScreen.classList.add("hide");
-//     questionScreen.classList.add("hide");
-//     endScreen.classList.add("hide");
-//     highscoresScreen.classList.remove("hide"); 
-// }
+  current.choices.forEach((choice, index) => {
+    const button = document.createElement("button");
+    button.textContent = choice;
+    button.classList.add("choice"); 
+    button.addEventListener("click", () => checkAnswer(index));
+    choicesContainer.appendChild(button);
+  });
+}
+
+function checkAnswer(index) {
+  if (index === questions[currentQuestion].answer) {
+    score += 10;
+  } else {
+    timeLeft -= 10;
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    endQuiz();
+  }
+}
 
 function endQuiz() {
-    clearInterval(timer);
-    // questionContainer.classList.add("hide"); 
-    endScreen.classList.remove("hide");
-    finalScore.textContent = score; 
+  clearInterval(timer);
+  questionScreen.classList.add("hide");
+  endScreen.classList.remove("hide");
+  finalScore.textContent = score;
 }
 
-
-startButton.addEventListener("click", () => {
-    const initials = initialsInput.value; 
-    console.log("Initials: ", initials, "Score: ", score);
-    startTimer();
-    showQuestion();
-}); 
+startButton.addEventListener("click", startQuiz);
 
 submitButton.addEventListener("click", () => {
-    const initials = initialsInput.value;
-    console.log("Initials: ", initials, "Score: ", score); 
-    showHighScores(); 
-}); 
+  const initials = initialsInput.value;
+  if (initials) {
+    saveHighScore(initials, score);
+  } else {
+    alert("Please enter initials to save score.");
+  }
+});
 
-showStartScreen(); 
+function saveHighScore(initials, score) {
+  let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+  highScores.push({ initials, score });
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+}
 
-// document.getElementById("questions").classList.add("hide"); 
+showStartScreen();
